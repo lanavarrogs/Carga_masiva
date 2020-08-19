@@ -9,27 +9,22 @@ dataset = pd.read_excel(path_file)
 dataset = dataset.replace(np.nan,'',regex=True)
 
 #Lectura del RFC
-def read_RFC():
+def read_RFC(id):
     #Filtrar el dataframe obteniendo los RFC
     list_rfc = list(dataset['RFC'])
-    list_rfc.remove('XAXX010101000')
-    return list_rfc
+    print(list_rfc[id])
 
 #Regresa el folio Electronico
-def read_electronic_folio():
+def read_electronic_folio(id):
     electronic_folio = list(dataset['FOLIO ELECTRONICO'])
-    return electronic_folio
+    return electronic_folio[id]
 
 #Regresa la lista de nombres separadas
-def get_name():
+def get_name(id):
     fullname = list(dataset['NOMBRE'])
-    names  = []
-    for i in range(0,len(fullname)):
-        names.append(fullname[i].split(' '))
-    return names
+    print(fullname[id].split(' ') )
+
+def data_length():
+    return len(dataset)
 
 
-if __name__ == "__main__":
-    read_RFC()
-    read_electronic_folio()
-    get_name()

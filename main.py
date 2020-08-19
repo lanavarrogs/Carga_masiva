@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import pandas as pd
 import time
+import data
 
 #se declara la ubicacion del driver
 PATH = '/usr/local/bin/chromedriver'
@@ -23,8 +24,7 @@ class Automatization(unittest.TestCase):
         driver.get('https://www.rug.gob.mx/Rug/home/inicio.do?fbclid=IwAR3RBgy45BNhDv46lw-nK_ZhifuoJHlgHn8zJf9My4qgaL4G8WVmLEeJb28')
 
 
-    def test_login(self):
-
+    def login(self):
         driver = self.driver
         #busca el boton de "ingresar"
         xpath_ingresa = '//*[@id="workingContainer"]/main/form/div[1]/div[2]/div[2]/div/input'
@@ -51,36 +51,50 @@ class Automatization(unittest.TestCase):
         #da click al boton
         ingresa2.click()
 
-        #busca en el menu la opcion de "Inscripcion"
-        inscripcion = driver.find_element_by_id('cuatroMenu')
-        #corrobora que este habilitada
-        self.assertTrue(inscripcion.is_enabled())
-        #da click en la opcion "inscripcion"
-        inscripcion.click()
-        
-        #busca la lista de opciones del acredor
-        acredor = Select(driver.find_element_by_name('idAcreedorTO'))
-        #selecciona al acredor "FC FINANCIAL SA DE CV SOFOM ER GRUPO FINANCIERO INBURSA"
-        acredor.select_by_visible_text('FC FINANCIAL SA DE CV SOFOM ER GRUPO FINANCIERO INBURSA')
 
-        #busca el boton de aceptar 
-        aceptar = driver.find_element_by_id('baceptar')
-        #da click en el boton de aceptar
-        aceptar.click()
+    def test_cicle(self):
+        self.login()
+        i = 0
+        count = data.data_length()
+        while (i < count):
+            self.page1()
+            data.read_RFC(i)
+            data.get_name(i)
+            i += 1
 
-        #busca la lista de la de tipo de persona
-        TipoPersona = Select(driver.find_element_by_id('tipoPersona'))
-        #selecciona la opcion de "persona fisica"
-        TipoPersona.select_by_visible_text('Persona Fisica')
-        
-        #busca la lista de nacionalidad
-        Nacionalidad=Select(driver.find_element_by_id('nacionalidad'))
-        #selecciona la opcion de Mexico
-        Nacionalidad.select_by_visible_text('MÉXICO')
+    def page1(self):
+            driver = self.driver    
+            #busca en el menu la opcion de "Inscripcion"
+            inscripcion = driver.find_element_by_id('cuatroMenu')
+            #corrobora que este habilitada
+            self.assertTrue(inscripcion.is_enabled())
+            #da click en la opcion "inscripcion"
+            inscripcion.click()
+            
+            #busca la lista de opciones del acredor
+            acredor = Select(driver.find_element_by_name('idAcreedorTO'))
+            #selecciona al acredor "FC FINANCIAL SA DE CV SOFOM ER GRUPO FINANCIERO INBURSA"
+            acredor.select_by_visible_text('FC FINANCIAL SA DE CV SOFOM ER GRUPO FINANCIERO INBURSA')
 
-        time.sleep(10)
+            #busca el boton de aceptar 
+            aceptar = driver.find_element_by_id('baceptar')
+            #da click en el boton de aceptar
+            aceptar.click()
 
-        
+            #busca la lista de la de tipo de persona
+            TipoPersona = Select(driver.find_element_by_id('tipoPersona'))
+            #selecciona la opcion de "persona fisica"
+            TipoPersona.select_by_visible_text('Persona Fisica')
+            
+            #busca la lista de nacionalidad
+            Nacionalidad=Select(driver.find_element_by_id('nacionalidad'))
+            #selecciona la opcion de Mexico
+            Nacionalidad.select_by_visible_text('MÉXICO')
+
+            
+
+            time.sleep(10)
+
     #Salida de la prueba
     def tear_Down(self):
         self.driver.quit()
