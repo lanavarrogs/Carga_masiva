@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import Select
 import pandas as pd
 import time
 import data
+import archivo
 
 #se declara la ubicacion del driver
 PATH = '/usr/local/bin/chromedriver'
@@ -50,19 +51,18 @@ class Automatization(unittest.TestCase):
         contrasenia.send_keys('GFI_MontSe_2005')
         #da click al boton
         ingresa2.click()
-
+    
 
     def test_cicle(self):
         self.login()
         i = 0
         count = data.data_length()
-        while (i < count):
-            self.page1()
-            data.read_RFC(i)
-            data.get_name(i)
-            i += 1
+        """while (i < count):
+            self.page1(1)
+            i += 1"""
+        self.page1(0)
 
-    def page1(self):
+    def page1(self,id):
             driver = self.driver    
             #busca en el menu la opcion de "Inscripcion"
             inscripcion = driver.find_element_by_id('cuatroMenu')
@@ -91,16 +91,121 @@ class Automatization(unittest.TestCase):
             #selecciona la opcion de Mexico
             Nacionalidad.select_by_visible_text('MÉXICO')
 
+            self.condition(id)
+            time.sleep(1)
+            continuar = driver.find_element_by_id('buttonID')
+            continuar.click()
+                    
+            self.page2(id)
+                
+    def condition(self,id):
+        driver = self.driver
+         #Variables del datasets
+        fullname =  data.get_name(id)
+        name = fullname[-1]
+        apellidoPaterno = fullname[0]
+        apellidoMaterno = fullname[1]
+        electronic_folio = data.read_electronic_folio(id)
+        RFC = data.read_RFC(id)
+        Curp = data.read_CURP(id)
             
+        #Comprobar si existe el folio electronico
+        if electronic_folio == '':
+            nombre =   driver.find_element_by_id('nombre')
+            nombre.send_keys(name)
 
-            time.sleep(10)
+            Paterno = driver.find_element_by_id('apellidoPaterno')
+            Paterno.send_keys(apellidoPaterno)
+
+            Materno = driver.find_element_by_id('apellidoMaterno')
+            Materno.send_keys(apellidoMaterno)
+            
+            if RFC == 'XAXX010101000':
+                NoRFC = driver.find_element_by_id('rfcValidar1')
+                NoRFC.click()
+            else:
+                rfc = driver.find_element_by_id('rfc')
+                rfc.send_keys(RFC)
+            
+            CURP = driver.find_element_by_id('docExtranjero')
+            CURP.send_keys(Curp)
+
+            AceptarDatos = driver.find_element_by_xpath('//*[@id="botonGuardar"]/input')
+            AceptarDatos.click()
+
+            continuar = driver.find_element_by_xpath('//*[@id="buttonID"]')
+            continuar.click()
+            
+        #en caso de que no exista 
+        else:
+            
+            NoFolio = driver.find_element_by_id('optotorgante')
+            NoFolio.click()
+
+            FolioEx = driver.find_element_by_id('folioExistente')
+            FolioEx.send_keys(electronic_folio)
+
+            ValidarFolio = driver.find_element_by_xpath('//*[@id="buttonValidar"]/input')
+            ValidarFolio.click()
+            
+            #comprueba que si no tiene RFC
+            if RFC == 'XAXX010101000':
+                NoRFC = driver.find_element_by_id('rfcValidar1')
+                NoRFC.click()
+            
+            #cuando si tienen RFC
+            else: 
+                print(RFC)   
+                rfc = driver.find_element_by_xpath('//*[@id="rfcOtFolMoral"]')
+                rfc.clear()
+                rfc.send_keys(RFC)
+                
+                AcepRFC = driver.find_element_by_id('butonIDAceptar')
+                AcepRFC.click()            
+
+    def page2(self,id):
+
+        driver = self.driver 
+
+        Fecha_inicio = data.get_fecha_inicio(id)
+        Monto_Inicial = str(data.get_monto_credito(id))
+        Serie = data.get_no_serie(id)
+        Fecha_fin = data.get_fecha_fin(id)
+
+        TipoGarantia = Select(driver.find_element_by_id('idTipoGarantia'))
+        TipoGarantia.select_by_visible_text('Prenda sin Transmisión de Posesión')
+        
+        FechaIni = driver.find_element_by_name('actoContratoTO.fechaCelebracion')
+        FechaIni.send_keys(Fecha_inicio)
+
+        mon_ini = driver.find_element_by_id('idMontoMaximo')
+        mon_ini.send_keys(Monto_Inicial)
+
+        TipoBien = Select(driver.find_element_by_id('formS2ag_actoContratoTO_tipoBienes'))
+        TipoBien.select_by_visible_text('Vehículos de motor')
+
+        descripcion = driver.find_element_by_name('actoContratoTO.descripcion')
+        descripcion.send_keys(Serie)
+
+        Bajo_protesta = driver.find_element_by_id('formS2ag_actoContratoTO_noGarantiaPreviaOt')
+        Bajo_protesta.click
+
+        Terminos = driver.find_element_by_id('actoContratoTO.otrosTerminos')
+        Terminos.send_keys(archivo.terminos_condiciones)
+        
+        Acta_Contrato = driver.find_element_by_id('cpContrato')
+        Acta_Contrato.click()
+
+        FechaTer = driver.find_element_by_id('datepicker5')
+        FechaTer.send_keys(Fecha_fin)
+
+
+    
+    
 
     #Salida de la prueba
     def tear_Down(self):
         self.driver.quit()
-
-        
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
