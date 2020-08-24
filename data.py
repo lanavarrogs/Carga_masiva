@@ -51,9 +51,19 @@ def read_CURP(id):
 def get_no_serie(id):
     serie =  list(dataset['serie'])
     return serie[id]
-    
+
+def get_month(id):
+    month = list(dataset['MESES'])
+    return (round(month[id]))
+
 def data_length():
     return len(dataset)
+    
 
 if __name__ == "__main__":
-    get_no_serie(0)
+    get_month(1)
+
+
+    """ boton se sigiente 
+        firma optenida
+        algoritmo de descarga"""

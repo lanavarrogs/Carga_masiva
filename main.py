@@ -5,6 +5,7 @@ import pandas as pd
 import time
 import data
 import archivo
+import variables as var
 
 #se declara la ubicacion del driver
 PATH = '/usr/local/bin/chromedriver'
@@ -46,9 +47,9 @@ class Automatization(unittest.TestCase):
         )
 
         #ingresa el nombre del usuario
-        usuario.send_keys('lhuertasg@inbursa.com')
+        usuario.send_keys(var.CORREO)
         #ingresa la contraseña
-        contrasenia.send_keys('GFI_MontSe_2005')
+        contrasenia.send_keys(var.CONTRASENIA)
         #da click al boton
         ingresa2.click()
     
@@ -60,7 +61,7 @@ class Automatization(unittest.TestCase):
         """while (i < count):
             self.page1(1)
             i += 1"""
-        self.page1(0)
+        self.page1(2)
 
     def page1(self,id):
             driver = self.driver    
@@ -92,6 +93,7 @@ class Automatization(unittest.TestCase):
             Nacionalidad.select_by_visible_text('MÉXICO')
 
             self.condition(id)
+
             time.sleep(1)
             continuar = driver.find_element_by_id('buttonID')
             continuar.click()
@@ -100,7 +102,7 @@ class Automatization(unittest.TestCase):
                 
     def condition(self,id):
         driver = self.driver
-         #Variables del datasets
+        #Variables del datasets
         fullname =  data.get_name(id)
         name = fullname[-1]
         apellidoPaterno = fullname[0]
@@ -130,11 +132,17 @@ class Automatization(unittest.TestCase):
             CURP = driver.find_element_by_id('docExtranjero')
             CURP.send_keys(Curp)
 
+            
             AceptarDatos = driver.find_element_by_xpath('//*[@id="botonGuardar"]/input')
             AceptarDatos.click()
-
+            time.sleep(10)
+            AceptarValores = driver.find_element_by_xpath('//*[@id="messageAlertDiv"]/div[2]/div[2]/input[1]')
+            AceptarValores.click()
+            time.sleep(10)
+            time.sleep(100)
             continuar = driver.find_element_by_xpath('//*[@id="buttonID"]')
             continuar.click()
+            
             
         #en caso de que no exista 
         else:
@@ -190,7 +198,7 @@ class Automatization(unittest.TestCase):
         Bajo_protesta = driver.find_element_by_id('formS2ag_actoContratoTO_noGarantiaPreviaOt')
         Bajo_protesta.click
 
-        Terminos = driver.find_element_by_id('actoContratoTO.otrosTerminos')
+        Terminos = driver.find_element_by_id('formS2ag_actoContratoTO_otrosTerminos')
         Terminos.send_keys(archivo.terminos_condiciones)
         
         Acta_Contrato = driver.find_element_by_id('cpContrato')
@@ -199,9 +207,56 @@ class Automatization(unittest.TestCase):
         FechaTer = driver.find_element_by_id('datepicker5')
         FechaTer.send_keys(Fecha_fin)
 
+        ContinuarPag2 = driver.find_element_by_id('baceptar')
+        ContinuarPag2.click()
+
+        self.page3(id)
+
 
     
-    
+    def page3(self,id):
+        driver = self.driver
+        mes = str(data.get_month(id))
+
+        meses = driver.find_element_by_id('formAcVig_inscripcionTO_meses')
+        meses.clear()
+        meses.send_keys(mes)
+
+        ContinuarPag3 = driver.find_element_by_id('baceptar')
+        ContinuarPag3.click()
+
+        self.page4(id)
+
+    def page4(self,id):
+        
+        driver = self.driver
+
+        certificado = driver.find_element_by_id('certI').send_keys(var.PATH_CERTIFICADO)
+        time.sleep(5)
+        clave_privada = driver.find_element_by_id('keyI').send_keys(var.PATH_CLAVE_PRIVADA)
+        time.sleep(5)
+        
+        ContraPriv = driver.find_element_by_id('keyP')
+        ContraPriv.send_keys(var.CONTRASENIA_PRIVADA)
+
+        time.sleep(10)
+
+        Identificarse = driver.find_element_by_xpath('//*[@id="formfirmar"]/table[2]/tbody/tr[3]/td/input')
+        Identificarse.click()
+        self.page5(id)
+
+    def page5(self, id):
+        driver = self.driver
+
+        descargar = driver.find_element_by_xpath('//*[@id="workingContainer"]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/div/div/input')
+        descargar.click()
+
+        
+        time.sleep(10)
+        
+
+        ContinuarPag4 = driver.find_element_by_id('btnFirma')
+        ContinuarPag4.click()
 
     #Salida de la prueba
     def tear_Down(self):
