@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import main
 
+
+DireccionExcel = main.abreExcel()
 #importacion del dataset de excel
-path_file = './Libro31.xlsx'
+path_file = DireccionExcel
 dataset = pd.read_excel(path_file)
 
 #Rellenando los na
