@@ -4,9 +4,9 @@ from datetime import datetime
 import main
 
 
-DireccionExcel = main.abreExcel()
+#DireccionExcel = abreExcel()
 #importacion del dataset de excel
-path_file = DireccionExcel
+path_file = r'./Libro31.xlsx'#DireccionExcel
 dataset = pd.read_excel(path_file)
 
 #Rellenando los na

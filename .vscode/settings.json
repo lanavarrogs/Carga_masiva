@@ -1,0 +1,9 @@
+{
+    "python.pythonPath": "C:\\Users\\shcra\\anaconda3\\python.exe",
+    "extensions.ignoreRecommendations": true,
+    "files.autoSave": "off",
+    "typescript.tsc.autoDetect": "off",
+    "npm.autoDetect": "off",
+    "debug.allowBreakpointsEverywhere": true,
+    "html.autoClosingTags": false
+}

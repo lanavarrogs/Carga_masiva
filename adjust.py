@@ -1,8 +1,11 @@
 import os 
 import subprocess
+import getpass
 
+#Obtener el usuario
+usr = getpass.getus()
 #Buscar el archivo en descargas 
-boleta_file = '/home/lanavarrog/Downloads/Boleta.pdf'
+boleta_file = 'C:\Users\{}}\OneDrive\Descargas\Boleta.pdf'
 destino = './archivos'
 
 def move_files():
