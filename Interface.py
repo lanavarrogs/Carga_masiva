@@ -1,62 +1,75 @@
 from tkinter import *
 from tkinter import filedialog
 import main
+import unittest
+
+
 
 class Interface:
     
-    def _init_(self,root):
-        self.miFrame=Frame(raiz, width= 1200, height=600)
+    def __init__(self,root):
+        self.miFrame=Frame(root, width= 1200, height=600)
         self.miFrame.pack()
         self.create_TextBox()
         self.create_Buttons()
+        self.get_correo()
     
     
-    def create_Buttons():
+    def create_Buttons(self):
         ContrasenaLabel=Label(self.miFrame, text='Busca el archivo de Excel: ')
         ContrasenaLabel.grid(row=3, column=0, sticky='e', padx=10, pady=10 )
-        BusExc=Button(self.miFrame, text='Buscar', command=abreExcel)
+        BusExc=Button(self.miFrame, text='Buscar', command=self.abreExcel)
         BusExc.grid(row=3, column=1)
 
         CertificadoLabel=Label(self.miFrame, text='Busca el archivo de Certificado: ')
         CertificadoLabel.grid(row=4, column=0, sticky='e', padx=10, pady=10 )
-        BusCer=Button(self.miFrame, text='Buscar', command=abreCertificado)
+        BusCer=Button(self.miFrame, text='Buscar', command=self.abreCertificado)
         BusCer.grid(row=4, column=1)
 
         KeyLabel=Label(self.miFrame, text='Busca el archivo Key: ')
         KeyLabel.grid(row=5, column=0, sticky='e', padx=10, pady=10 )
-        BusCer=Button(self.miFrame, text='Buscar', command=abreKey)
+        BusCer=Button(self.miFrame, text='Buscar', command=self.abreKey)
         BusCer.grid(row=5, column=1)
 
-        Enviar = Button(self.miFrame, text='Enviar', command=valor)
-        Enviar.grid(row=7, column= 1,padx=10, pady=10)
+        Enviar = Button(self.miFrame, text='Enviar', command=self.valor)
+        Enviar.grid(row=7, column= 1,padx=10, pady=10, sticky=W + E)
 
-    def create_TextBox():
-        nombreLabel=Label(self.miFrame, text='Usuario: ')
-        nombreLabel.grid(row=1, column=0, sticky='e', padx=10, pady=10)
-        cuadroTexto = Entry(self.miFrame)
-        cuadroTexto.grid(row=1, column=1, padx=10, pady=10)
+    def create_TextBox(self):
+        self.nombreLabel=Label(self.miFrame, text='Usuario: ')
+        self.nombreLabel.grid(row=1, column=0, sticky='e', padx=10, pady=10)
+        self.cuadroTexto = Entry(self.miFrame)
+        self.cuadroTexto.focus()
+        self.cuadroTexto.grid(row=1, column=1, padx=10, pady=10)
 
-        ContrasenaLabel=Label(self.miFrame, text='Contraseña: ')
-        ContrasenaLabel.grid(row=2, column=0, sticky='e', padx=10, pady=10 )
-        cuadroTextoContrasena = Entry(self.miFrame)
-        cuadroTextoContrasena.grid(row=2, column=1, padx=10, pady=10)
-        cuadroTextoContrasena.config(show="*")
+        self.ContrasenaLabel=Label(self.miFrame, text='Contraseña: ')
+        self.ContrasenaLabel.grid(row=2, column=0, sticky='e', padx=10, pady=10 )
+        self.cuadroTextoContrasena = Entry(self.miFrame)
+        self.cuadroTextoContrasena.grid(row=2, column=1, padx=10, pady=10)
+        self.cuadroTextoContrasena.config(show="*")
 
-        ContrasenaLlaveLabel=Label(self.miFrame, text='Contraseña de llave electronica: ')
-        ContrasenaLlaveLabel.grid(row=6, column=0, sticky='e', padx=10, pady=10 )
-        cuadroTextoContrasenaLlave = Entry(self.miFrame)
-        cuadroTextoContrasenaLlave.grid(row=6, column=1, padx=10, pady=10)
-        cuadroTextoContrasenaLlave.config(show="*")
+        self.ContrasenaLlaveLabel=Label(self.miFrame, text='Contraseña de llave electronica: ')
+        self.ContrasenaLlaveLabel.grid(row=6, column=0, sticky='e', padx=10, pady=10 )
+        self.cuadroTextoContrasenaLlave = Entry(self.miFrame)
+        self.cuadroTextoContrasenaLlave.grid(row=6, column=1, padx=10, pady=10)
+        self.cuadroTextoContrasenaLlave.config(show="*")
     
+    def get_correo(self):
+        return self.cuadroTexto.get()
 
-    def abreExcel(): 
+    def get_contrasenia(self):
+        return self.cuadroTextoContrasena.get()
+
+    def abreExcel(self):
         AbrExe=filedialog.askopenfilename(initialdir = "/",title = "Seleccionar Excel",filetypes = (("Archivos Excel",".xlsx"),("all files",".*")))
         print(AbrExe)
 
-    def abreCertificado():
+    def abreCertificado(self):
         AbrCer=filedialog.askopenfilename(initialdir = "/",title = "Selecccionar Certificado",filetypes = (("Archivos Certificado",".cer"),("all files",".*")))
         print(AbrCer)
 
-    def abreKey():
+    def abreKey(self):
         Abrk=filedialog.askopenfilename(initialdir = "/",title = "Seleccionar Key",filetypes = (("Archivos key",".key"),("all files",".*")))
         print(abreKey)
+    
+    def valor(self):
+        unittest.main(verbosity=2)

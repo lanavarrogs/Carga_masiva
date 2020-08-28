@@ -48,12 +48,14 @@ class Automatization(unittest.TestCase):
         )
 
         #ingresa el nombre del usuario
-        usuario.send_keys()
-        #ingresa la contraseña
-        contrasenia.send_keys(var.CONTRASENIA)
-        #da click al boton
-        ingresa2.click()
-    
+        try:
+            usuario.send_keys(window.get_correo())
+            #ingresa la contraseña
+            contrasenia.send_keys(window.get_contrasenia())
+            #da click al boton
+            ingresa2.click()
+        except  exception as e:
+            print(e)
 
     def test_cicle(self):
         self.login()
@@ -272,9 +274,11 @@ class Automatization(unittest.TestCase):
     #Salida de la prueba
     def tear_Down(self):
         self.driver.quit()
+        
 
 if __name__ == "__main__":
     app = Tk()
     window = Interface(app)  
     app.mainloop()
-    #unittest.main(verbosity=2)
+   
+        
