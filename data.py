@@ -3,14 +3,19 @@ import numpy as np
 from datetime import datetime
 import main
 
+path = ''
+def get_path(valor):
+    path = valor
+    iniciar()
 
-#DireccionExcel = abreExcel()
-#importacion del dataset de excel
-path_file = r'./Libro31.xlsx'#DireccionExcel
-dataset = pd.read_excel(path_file)
 
-#Rellenando los na
-dataset = dataset.replace(np.nan,'',regex=True)
+def iniciar():
+    path_file = path
+    dataset = pd.read_excel(path_file)
+    #Rellenando los na
+    dataset = dataset.replace(np.nan,'',regex=True)
+    print(dataset)
+
 
 #Lectura del RFC
 def read_RFC(id):

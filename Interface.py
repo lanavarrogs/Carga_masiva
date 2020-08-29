@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 import main
 import unittest
-
+import data
 
 
 class Interface:
@@ -52,24 +52,32 @@ class Interface:
         self.cuadroTextoContrasenaLlave = Entry(self.miFrame)
         self.cuadroTextoContrasenaLlave.grid(row=6, column=1, padx=10, pady=10)
         self.cuadroTextoContrasenaLlave.config(show="*")
-    
+
+
     def get_correo(self):
         return self.cuadroTexto.get()
 
     def get_contrasenia(self):
+        #print (self.cuadroTextoContrasena.get())
         return self.cuadroTextoContrasena.get()
+
+    def get_contrasenia_llave(self):
+        return self.cuadroTextoContrasenaLlave.get()
+
+    
 
     def abreExcel(self):
         AbrExe=filedialog.askopenfilename(initialdir = "/",title = "Seleccionar Excel",filetypes = (("Archivos Excel",".xlsx"),("all files",".*")))
         print(AbrExe)
+        #data.get_path(AbrExe)
 
     def abreCertificado(self):
         AbrCer=filedialog.askopenfilename(initialdir = "/",title = "Selecccionar Certificado",filetypes = (("Archivos Certificado",".cer"),("all files",".*")))
-        print(AbrCer)
+        return AbrCer
 
     def abreKey(self):
         Abrk=filedialog.askopenfilename(initialdir = "/",title = "Seleccionar Key",filetypes = (("Archivos key",".key"),("all files",".*")))
-        print(abreKey)
+        return Abrk
     
     def valor(self):
         unittest.main(verbosity=2)

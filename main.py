@@ -46,16 +46,14 @@ class Automatization(unittest.TestCase):
         and contrasenia.is_enabled()
         and ingresa2.is_enabled()
         )
-
-        #ingresa el nombre del usuario
         try:
+            #ingresa el nombre del usuario
             usuario.send_keys(window.get_correo())
             #ingresa la contraseña
-            contrasenia.send_keys(window.get_contrasenia())
-            #da click al boton
+            contrasenia.send_keys(window.get_contrasenia())            #da click al boton
             ingresa2.click()
-        except  exception as e:
-            print(e)
+        except:
+            print("Error Login")
 
     def test_cicle(self):
         self.login()
@@ -63,7 +61,7 @@ class Automatization(unittest.TestCase):
         count = data.data_length()
         while (i < count):
             try:
-                self.page1(1)
+                self.page1(i)
             except expression as identifier:
                 f = open('errores_log.txt','a')
                 f.write(identifier)
@@ -244,13 +242,13 @@ class Automatization(unittest.TestCase):
         
         driver = self.driver
 
-        certificado = driver.find_element_by_id('certI').send_keys(main.abreCertificado())
+        certificado = driver.find_element_by_id('certI').send_keys(window.abreCertificado())
         time.sleep(5)
-        clave_privada = driver.find_element_by_id('keyI').send_keys(main.abreKey())
+        clave_privada = driver.find_element_by_id('keyI').send_keys(window.abreKey())
         time.sleep(5)
         
         ContraPriv = driver.find_element_by_id('keyP')
-        ContraPriv.send_keys(var.CONTRASENIA_PRIVADA)
+        ContraPriv.send_keys(window.get_contrasenia_llave())
 
         time.sleep(10)
 
